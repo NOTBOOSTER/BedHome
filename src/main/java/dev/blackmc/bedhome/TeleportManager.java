@@ -1,11 +1,11 @@
 package dev.blackmc.bedhome;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TeleportManager {
@@ -25,7 +25,7 @@ public class TeleportManager {
         }
 
         player.sendMessage(plugin.getConfig().getString("prefix") + " " +
-                plugin.getConfig().getString("messages.teleporting").replace("<cooldown>", String.valueOf(cooldown)));
+                Objects.requireNonNull(plugin.getConfig().getString("messages.teleporting")).replace("<cooldown>", String.valueOf(cooldown)));
 
         BukkitRunnable task = new BukkitRunnable() {
             @Override

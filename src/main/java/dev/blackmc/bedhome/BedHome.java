@@ -4,6 +4,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import dev.blackmc.bedhome.commands.HomeCommand;
 import dev.blackmc.bedhome.listeners.PlayerMoveListener;
 
+import java.util.Objects;
+
 public class BedHome extends JavaPlugin {
 
     private TeleportManager teleportManager;
@@ -12,7 +14,7 @@ public class BedHome extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         teleportManager = new TeleportManager(this);
-        getCommand("home").setExecutor(new HomeCommand(this));
+        Objects.requireNonNull(getCommand("home")).setExecutor(new HomeCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerMoveListener(this), this);
     }
 
