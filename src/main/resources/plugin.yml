@@ -1,0 +1,4 @@
+name: BedHome
+version: '${project.version}'
+main: dev.blackmc.bedhome.BedHome
+api-version: '1.20'
