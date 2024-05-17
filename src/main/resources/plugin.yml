@@ -2,3 +2,7 @@ name: BedHome
 version: '${project.version}'
 main: dev.blackmc.bedhome.BedHome
 api-version: '1.20'
+commands:
+  home:
+    description: Teleport to your bed.
+    usage: /home bed

@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import com.github.sirblobman.combatlogx.api.ICombatLogX;
 import com.github.sirblobman.combatlogx.api.manager.ICombatManager;
 
+import java.util.Objects;
+
 public class HomeCommand implements CommandExecutor {
 
     private final BedHome plugin;
@@ -35,8 +37,13 @@ public class HomeCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        String prefix = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("prefix"));
-        String noBedMessage = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.no-bed"));
+        if (!player.hasPermission("bedhome.bed")) {
+            player.sendMessage(ChatColor.RED + "You do not have permission to use this command.");
+            return true;
+        }
+
+        String prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("prefix")));
+        String noBedMessage = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages.no-bed")));
         int cooldown = plugin.getConfig().getInt("cooldown");
 
         if (args.length != 1 || !args[0].equalsIgnoreCase("bed")) {

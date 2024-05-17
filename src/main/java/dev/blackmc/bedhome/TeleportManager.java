@@ -1,5 +1,6 @@
 package dev.blackmc.bedhome;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,22 +18,28 @@ public class TeleportManager {
         this.plugin = plugin;
     }
 
+    public boolean isTeleporting(Player player) {
+        return cooldownTasks.containsKey(player.getUniqueId());
+    }
+
     public void teleportWithCooldown(Player player, Location location, int cooldown) {
-        if (cooldownTasks.containsKey(player.getUniqueId())) {
-            player.sendMessage(plugin.getConfig().getString("prefix") + " " +
-                    plugin.getConfig().getString("messages.cooldown"));
+        String prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("prefix")));
+        String teleportingMessage = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages.teleporting"))).replace("<cooldown>", String.valueOf(cooldown));
+        String teleportedMessage = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages.teleported")));
+        String teleportCancelledMessage = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages.teleport-cancelled")));
+
+        if (isTeleporting(player)) {
+            player.sendMessage(prefix + " " + ChatColor.RED + "You are already teleporting!");
             return;
         }
 
-        player.sendMessage(plugin.getConfig().getString("prefix") + " " +
-                Objects.requireNonNull(plugin.getConfig().getString("messages.teleporting")).replace("<cooldown>", String.valueOf(cooldown)));
+        player.sendMessage(prefix + " " + teleportingMessage);
 
         BukkitRunnable task = new BukkitRunnable() {
             @Override
             public void run() {
                 player.teleport(location);
-                player.sendMessage(plugin.getConfig().getString("prefix") + " " +
-                        plugin.getConfig().getString("messages.teleported"));
+                player.sendMessage(prefix + " " + teleportedMessage);
                 cooldownTasks.remove(player.getUniqueId());
             }
         };
@@ -42,11 +49,13 @@ public class TeleportManager {
     }
 
     public void cancelTeleport(Player player) {
-        if (cooldownTasks.containsKey(player.getUniqueId())) {
+        String prefix = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("prefix")));
+        String teleportCancelledMessage = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("messages.teleport-cancelled")));
+
+        if (isTeleporting(player)) {
             cooldownTasks.get(player.getUniqueId()).cancel();
             cooldownTasks.remove(player.getUniqueId());
-            player.sendMessage(plugin.getConfig().getString("prefix") + " " +
-                    plugin.getConfig().getString("messages.teleport-cancelled"));
+            player.sendMessage(prefix + " " + teleportCancelledMessage);
         }
     }
 }
