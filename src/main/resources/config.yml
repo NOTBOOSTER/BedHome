@@ -1,8 +1,8 @@
-prefix: '&6[BedHome]'
+prefix: '&c&l BedHome &7> &f'
 messages:
   no-bed: 'You don''t have a bed set!'
   teleporting: 'Teleporting in <cooldown> seconds...'
   teleported: 'You have been teleported to your bed.'
   teleport-cancelled: 'Teleportation cancelled due to movement.'
   cooldown: 'You must wait before using this command again!'
-cooldown: 10
+cooldown: 3 #Do 0 to disable
