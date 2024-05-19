@@ -84,4 +84,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contact
 
 For support, questions, or suggestions, please open an issue on the [GitHub repository](https://github.com/NOTBOOSTER/BedHome/issues).
-```
